@@ -210,7 +210,7 @@ class SSA3021X(SpectrumAnalyzer):
             raise ValueError("Powerunit has to be an instance of POWERUNITS")
 
         pwr = None
-        if powerunit == RFPowerLevel.DBM:
+        if powerunit == RFPowerLevel.dBm:
             pwr = power
         else:
             raise ValueError(f"Unsupported power unit {powerunit}")
