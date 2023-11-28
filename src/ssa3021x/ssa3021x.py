@@ -229,6 +229,10 @@ class SSA3021X(SpectrumAnalyzer):
         self._scpi.scpiCommand(f":FREQ:STOP {stop} Hz")
         return True
 
+    def _stat_clear(self):
+        self._scpi.scpiCommand(":SENS:POW:STATIS:CLEA?")
+        return True
+
 if __name__ == "__main__":
     from time import sleep
     with SSA3021X("10.4.1.15", useNumpy = True) as ssa:
