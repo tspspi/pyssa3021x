@@ -21,6 +21,7 @@ class SSA3021X(SpectrumAnalyzer):
         if useNumpy:
             import numpy as np
 
+        self._logger = logger
         self._scpi = SCPIDeviceEthernet(address, port, logger)
         self._usedConnect = False
         self._usedContext = False
@@ -89,11 +90,11 @@ class SSA3021X(SpectrumAnalyzer):
         elif fmt == 1:
             self._scpi.scpiCommand(":FORM REAL")
 
-    def _plot_trace(self, traceidx = 0, legend = None, ax = None, show = False, title = None, scale = SISCALE.ONE):
+    def _plot_trace(self, traceidx = 0, legend = None, ax = None, show = False, title = None, scale = SIUNIT.ONE):
         import matplotlib.pyplot as plt
 
-        if not isinstance(scale, SISCALE):
-            raise ValueError("Scalingfactor has to be an instance of SISCALE")
+        if not isinstance(scale, SIUNIT):
+            raise ValueError("Scalingfactor has to be an instance of SIUNIT")
 
         scalef = 1e6
         scaleprefix = "M"
@@ -238,7 +239,7 @@ if __name__ == "__main__":
     with SSA3021X("10.4.1.15", useNumpy = True) as ssa:
         print(ssa._id())
         #print(ssa._query_trace((0,1)))
-        ssa._plot_trace(legend = "S11", show = True, scale=SISCALE.MEGA)
+        ssa._plot_trace(legend = "S11", show = True, scale=SIUNIT.MEGA)
         #ssa._set_reference_level(0)
         #print(ssa._get_reference_level())
         #sleep(10)
