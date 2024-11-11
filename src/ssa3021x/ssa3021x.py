@@ -1,12 +1,12 @@
-from labdevices.exceptions import CommunicationError_ProtocolViolation, CommunicationError_Timeout, CommunicationError_NotConnected
-from labdevices.spectrumanalyzer import RFPowerLevel, SpectrumAverageUnit, SpectrumAnalyzer
+from labdevices.exceptions import CommunicationError_ProtocolViolation
+# CommunicationError_Timeout, CommunicationError_NotConnected
+from labdevices.spectrumanalyzer import RFPowerLevel, SpectrumAnalyzer
+#from labdevices.spectrumanalyzer import SpectrumAverageUnit
 from labdevices.scpi import SCPIDeviceEthernet
-from labdevices.siunits import SiUtils, SIUNIT
-
-from time import sleep
+from labdevices.siunits import SIUNIT #, SiUtils
 
 import atexit
-from enum import Enum
+#from enum import Enum
 
 class SSA3021X(SpectrumAnalyzer):
     def __init__(
@@ -18,8 +18,8 @@ class SSA3021X(SpectrumAnalyzer):
 
             useNumpy = False
     ):
-        if useNumpy:
-            import numpy as np
+#        if useNumpy:
+#            import numpy as np
 
         self._logger = logger
         self._scpi = SCPIDeviceEthernet(address, port, logger)
@@ -34,7 +34,7 @@ class SSA3021X(SpectrumAnalyzer):
     def _connect(self, address = None, port = None):
         if self._scpi.connect():
             # Ask for idntity and verify
-            v = self._id()
+            _ = self._id()
             # Set format to ASCII
             self._set_dataformat(0)
             return True
@@ -67,7 +67,7 @@ class SSA3021X(SpectrumAnalyzer):
         if res[0] != "Siglent Technologies":
             raise CommunicationError_ProtocolViolation(f"IDN returned manufacturer {res[0]}")
         if res[1] != "SSA3021X":
-            raise CommunicationError_ProtocolViolation(f"IDN does not identify SSA3021X device")
+            raise CommunicationError_ProtocolViolation("IDN does not identify SSA3021X device")
 
         ver = res[3].split(".")
 
@@ -235,7 +235,6 @@ class SSA3021X(SpectrumAnalyzer):
         return True
 
 if __name__ == "__main__":
-    from time import sleep
     with SSA3021X("10.4.1.15", useNumpy = True) as ssa:
         print(ssa._id())
         #print(ssa._query_trace((0,1)))
